@@ -224,3 +224,24 @@ describe("mastermind large array timing test", () => {
   );
 });
 
+// The actual game.
+
+const colours = ['red', 'blue', 'yellow', 'orange', 'purple', 'green'];
+
+const mastermindCalculate = (guess, secret) => {
+  // Game domain validation:
+  if (!Array.isArray(guess) || !Array.isArray(secret)) {
+    throw 'invalid data: need two arrays'
+  }
+  if (!guess.each(colours.includes)) {
+    throw 'guess is invalid: must contain specified colours'
+  }
+  if (!secret.each(colours.includes)) {
+    throw 'secret is invalid: must contain specified colours'
+  }
+  if (guess.length != secret.length) {
+    throw 'Invalid data: guess and secret must be same length';
+  }
+  // Now just into the world of pure maths/algorithm:
+  return evaluateE(guess, secret)
+}
