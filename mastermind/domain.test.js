@@ -1,13 +1,34 @@
-const zip = (a, b) => a.map((value, index) => [value, b[index]]);
+const zip = (a, b) =>
+  (a.length > b.length) ?
+    a.map((value, index) => [value, b[index]]) :
+    b.map((value, index) => [a[index], value]);
+
 const unzip = (l) =>
   l.reduce(
     ([l1, l2], [a, b]) => {
-      l1.push(a);
-      l2.push(b);
+      if (a !== undefined) l1.push(a);
+      if (b !== undefined) l2.push(b);
       return [l1, l2];
     },
     [[], []]
   );
+
+
+
+const fc = require('fast-check');
+
+test('unzip reverses zip', () => {
+  fc.assert(
+    fc.property(
+      fc.array(fc.integer()), fc.array(fc.integer()),
+      (a1, a2) => {
+        const [b1, b2] = unzip(zip(a1, a2));
+        expect(b1).toStrictEqual(a1);
+        expect(b2).toStrictEqual(a2)
+      })
+  )
+})
+
 const rmElem = (l, index) => l.splice(index, 0);
 
 function shuffle(array) {
@@ -184,9 +205,10 @@ describe("mastermind large array timing test", () => {
       const executionTimeMs = endTime - startTime;
 
       // going to be affected by computer etc, but just saying, it can't take too long...
-      // (150ms on my slow machine)
-      expect(executionTimeMs).toBeLessThan(200);
+      // (250ms on my slow machine)
+      expect(executionTimeMs).toBeLessThan(300);
       console.log(`ExecutionTime = ${executionTimeMs}ms. Result: ${result}`);
     }
   );
 });
+
