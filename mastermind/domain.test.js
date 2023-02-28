@@ -1,8 +1,12 @@
+// Adding basic operations missing from javascript array's.
+
+// zip: e.g. : zip([1,2,3,4],[a,b,c]) => ([1,a], [2,b], [3,c], [4,undefined])
 const zip = (a, b) =>
   (a.length > b.length) ?
     a.map((value, index) => [value, b[index]]) :
     b.map((value, index) => [a[index], value]);
 
+// reverse of zip.
 const unzip = (l) =>
   l.reduce(
     ([l1, l2], [a, b]) => {
@@ -17,6 +21,7 @@ const unzip = (l) =>
 
 const fc = require('fast-check');
 
+// Property base test zip and unzip: one reverses the other so a good testing option:
 test('unzip reverses zip', () => {
   fc.assert(
     fc.property(
@@ -31,11 +36,9 @@ test('unzip reverses zip', () => {
 
 const rmElem = (l, index) => l.splice(index, 0);
 
-function shuffle(array) {
-  array.sort(() => Math.random() - 0.5);
-  return array;
-}
 
+// A number of different evalute algoriths. Just playing around for the most part.
+// The best one is the last one
 const evaluateA = (l1, l2) => {
   const positionMatches = zip(l1, l2).filter(([a, b]) => a === b).length;
 
@@ -169,7 +172,8 @@ const evaluateE = (l1, l2) => {
   return [positionMatches, outOfPositionMatches];
 };
 
-describe("mastermind evaluate2b", () => {
+// A number of test cases for evaluate algorithm:
+describe("mastermind evaluateE", () => {
   test.each([
     { a: [], b: [], expected: [0, 0] },
     { a: [1], b: [1], expected: [1, 0] },
@@ -183,6 +187,14 @@ describe("mastermind evaluate2b", () => {
     expect(evaluateE(a, b)).toStrictEqual(expected);
   });
 });
+
+// Make big arrays, for the purpose of testing out how fast the operation is.
+// Really is testing to see if there are any sort of O(n^2) or O(n^n) problems.
+// 
+function shuffle(array) {
+  array.sort(() => Math.random() - 0.5);
+  return array;
+}
 
 const bigArray1 = shuffle(
   Array(100000)
