@@ -150,26 +150,26 @@ const evaluateE = (l1, l2) => {
   // Get the number of position matches,
   // and a map of non-match-number -> [l1count, l2count]
   // (i.e. how many times non-match-number appears in l1 and l2)
-  const [positionMatches, misMatchMap] = l1l2.reduce(
-    ([matches, nonMatchMap], [a, b]) => {
+  const [totalMatchesCount, nonMatches] = l1l2.reduce(
+    ([matchCount, nonMatchMap], [a, b]) => {
       if (a === b) {
-        return [matches + 1, nonMatchMap];
+        return [matchCount + 1, nonMatchMap];
       }
       nonMatchMap[a] ? nonMatchMap[a][0]++ : (nonMatchMap[a] = [1, 0]);
       nonMatchMap[b] ? nonMatchMap[b][1]++ : (nonMatchMap[b] = [0, 1]);
-      return [matches, nonMatchMap];
+      return [matchCount, nonMatchMap];
     },
-    [0, {}]
+    [0, new Map()]
   );
 
   // Now, based on the misMatchMap, add up how many amount to out-of-position matches
-  const outOfPositionMatches = Object.entries(misMatchMap).reduce(
+  const outOfPositionMatches = Object.entries(nonMatches).reduce(
     (count, [_nonMatchKey, [l1Count, l2Count]]) =>
       count + Math.min(l1Count, l2Count),
     0
   );
 
-  return [positionMatches, outOfPositionMatches];
+  return [totalMatchesCount, outOfPositionMatches];
 };
 
 // A number of test cases for evaluate algorithm:
@@ -197,12 +197,12 @@ function shuffle(array) {
 }
 
 const bigArray1 = shuffle(
-  Array(100000)
+  Array(200000)
     .fill(0)
     .map((x, i) => i)
 );
 const bigArray2 = shuffle(
-  Array(100000)
+  Array(200000)
     .fill(0)
     .map((x, i) => i)
 );
@@ -217,8 +217,7 @@ describe("mastermind large array timing test", () => {
       const executionTimeMs = endTime - startTime;
 
       // going to be affected by computer etc, but just saying, it can't take too long...
-      // (250ms on my slow machine)
-      expect(executionTimeMs).toBeLessThan(300);
+      expect(executionTimeMs).toBeLessThan(600);
       console.log(`ExecutionTime = ${executionTimeMs}ms. Result: ${result}`);
     }
   );
