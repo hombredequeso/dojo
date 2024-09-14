@@ -37,6 +37,9 @@ const orderedDaysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday
 
 const parseInt10 = (str) => parseInt(str, 10);
 
+const minutesInDay = 24 * 60
+const minutesInWeek = 7 * minutesInDay; // 10080
+
 const toMinuteHours = (hourMinuteStr) => {
   const hm = hourMinuteStr.split(':').map(parseInt10)
   return hm[0]*60 + hm[1];
@@ -47,11 +50,10 @@ const toWeeklyMinutes = (dayTime) =>
 + toMinuteHours(dayTime.time);
 
 
-// key function: 
-const isBetween = (modulo)=>(a,b) => (x) => (a<b)? (x < b && x >= a): (x >= a || x < b)
+const isBetween = (modulo)=>(a,b) => (x) => 
+  (a<=b)? (x < b && x >= a): 
+    (x >= a || x < b)
 
-const minutesInDay = 24 * 60
-const minutesInWeek = 7 * minutesInDay; // 10080
 
 const isOpenOn = (openingHours, dayTime) => {
   // Convert all day/times into weeklyMinute amounts (0 -> 10079)

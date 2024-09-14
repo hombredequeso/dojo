@@ -42,8 +42,8 @@ const toMinuteHours = (hourMinuteStr) => {
 //
 // open and close on same day
 // AND 
-// open and close on consecutive days, and day is the opening day.
-// open and close on consecutive days, and day is the closing day.
+// open and close on consecutive days, and dayTime is on the opening day.
+// open and close on consecutive days, and dayTime is on the closing day.
 
 const isOpenOn = (openingHours, dayTime) => 
   (dayTime.day === openingHours.open.day && dayTime.day === openingHours.close.day &&

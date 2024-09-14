@@ -38,10 +38,10 @@ const toMinuteHours = (hourMinuteStr) => {
 // there are 4 possible situations to cover:
 //
 // open and close on same day
-// open and close on consecutive days, and day is the opening day.
-// open and close on consecutive days, and day is the closing day.
+// open and close on consecutive days, and dayTime is on the opening day.
+// open and close on consecutive days, and dayTime is on the closing day.
 // AND
-// day is neither open or close day, but in between them.
+// dayTime is on neither open or close day, but in between them.
 
 // Note that it is necessary to introduce the idea that the days of the week are ordered.
 // Looking back, it is possible to see that this idea was explicitly absent from the algorithm.

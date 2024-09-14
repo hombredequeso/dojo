@@ -42,9 +42,10 @@ const dayNumber = (day) => orderedDaysOfWeek.findIndex(d => d === day);
 // there are 6 possible situations to cover:
 //
 // open and close on same day
-// open and close on consecutive days, and day is the opening day.
-// open and close on consecutive days, and day is the closing day.
-// day is neither open or close day, but in between them.
+
+// open and close on consecutive days, and dayTime is on the opening day.
+// open and close on consecutive days, and dayTime is on the closing day.
+// dayTime is on neither open or close day, but in between them.
 // AND
 // day is after open day, and open/close days cross over end-of-week-boundary
 // day is before close day, and open/close days cross over end-of-week-boundary
@@ -101,7 +102,7 @@ describe('isOpen', () => {
 // What if, reflecting on the increasing complexity it is possible to discover a more comprehensive, simpler
 // way of expressing the problem.
 // Note that the complexity is two fold:
-//   * increasing combinations in the isOpenOn function.
+//   * increasing combinations in the isOpenOn function, making it harder to reason about, and harder to know all possible scenarios are covered.
 //   * increasing concepts in moving through, e.g. introducing the < and > operator for days (i.e. know the order of days).
 
 // Both of these types of complexity are manifestations of the same underlying problem,
@@ -110,3 +111,5 @@ describe('isOpen', () => {
 // 03: over a day -> more than one day later boundary
 // 04: over a boundary between the end to the start of the week.
 
+// A further question to consider is the range of related problems that this solution can easily solve.
+// For instance, what if the next problem we want to solve is, what is the next opening time of the shop?
