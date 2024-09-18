@@ -42,17 +42,17 @@ const toMinuteHours = (hourMinuteStr) => {
 //
 // open and close on same day
 // AND 
-// open and close on consecutive days, and dayTime is on the opening day.
-// open and close on consecutive days, and dayTime is on the closing day.
+// open then close on the next day, and dayTime is on the opening day.
+// open then close on the next day, and dayTime is on the closing day.
 
 const isOpenOn = (openingHours, dayTime) => 
   (dayTime.day === openingHours.open.day && dayTime.day === openingHours.close.day &&
   toMinuteHours(dayTime.time) >= toMinuteHours(openingHours.open.time) &&
-  toMinuteHours(dayTime.time) < toMinuteHours(openingHours.close.time) ) ||
-
+  toMinuteHours(dayTime.time) < toMinuteHours(openingHours.close.time) ) 
+  ||
   (dayTime.day === openingHours.open.day && openingHours.open.day !== openingHours.close.day &&
-  toMinuteHours(dayTime.time) >= toMinuteHours(openingHours.open.time) ) ||
-
+  toMinuteHours(dayTime.time) >= toMinuteHours(openingHours.open.time) ) 
+  ||
   (dayTime.day === openingHours.close.day  && openingHours.open.day !== openingHours.close.day &&
   toMinuteHours(dayTime.time) < toMinuteHours(openingHours.close.time) );
 

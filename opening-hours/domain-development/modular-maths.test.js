@@ -4,9 +4,9 @@
 
 // isBetween: equal to or greater than a AND less than b
 const isBetween = (modulo)=>(a,b) => (x) => {
-  const am = a %modulo;
-  const bm = b %modulo;
-  const xm = x %modulo;
+  const am = a % modulo;
+  const bm = b % modulo;
+  const xm = x % modulo;
 
   return (am<=bm)? (xm < bm && xm >= am): 
     (xm >= am || xm < bm);
@@ -82,6 +82,7 @@ describe('getNext mod 10', () => {
     [[2, 1], 0, 1],
     [[1], 9, 1],
     [[1, 2], 9, 1],
+    [[2, 1], 9, 1],
     [[2, 9], 8, 9],
   ])('%#. getNext(10)(%p)(%d) = %s', (arr, x, expectedResult) => {
     const result =getNext(10)(arr)(x);

@@ -1,4 +1,4 @@
-// open one day, close 2 days later?
+// open one day - Thursday, close 2 days later - Saturday
 
 const weeklyOpeningHours = [
   {
@@ -35,30 +35,33 @@ const toMinuteHours = (hourMinuteStr) => {
 }
 
 // Key function:
+// Turns out our implementation of open then close next day covers 
+// open then close on a subsequent day, if the dayTime falls on open or close day.
+//
 // there are 4 possible situations to cover:
 //
 // open and close on same day
-// open and close on consecutive days, and dayTime is on the opening day.
-// open and close on consecutive days, and dayTime is on the closing day.
+// open then close on a subsequent day, and dayTime is on the opening day.
+// open then close on a subsequent day, and dayTime is on the closing day.
 // AND
 // dayTime is on neither open or close day, but in between them.
 
 // Note that it is necessary to introduce the idea that the days of the week are ordered.
-// Looking back, it is possible to see that this idea was explicitly absent from the algorithm.
-// The only day related operators required were === and !==, now >= and < are required,
+// Looking back, it is possible to see that this idea was entirely absent from the algorithm.
+// The only day related operators required were === and !==, but now >= and < are required,
 // hence the idea of ordering.
 
 const isOpenOn = (openingHours, dayTime) => 
   (dayTime.day === openingHours.open.day && dayTime.day === openingHours.close.day &&
   toMinuteHours(dayTime.time) >= toMinuteHours(openingHours.open.time) &&
-  toMinuteHours(dayTime.time) < toMinuteHours(openingHours.close.time) ) ||
-
+  toMinuteHours(dayTime.time) < toMinuteHours(openingHours.close.time) ) 
+  ||
   (dayTime.day === openingHours.open.day && openingHours.open.day !== openingHours.close.day &&
-  toMinuteHours(dayTime.time) >= toMinuteHours(openingHours.open.time) ) ||
-
+  toMinuteHours(dayTime.time) >= toMinuteHours(openingHours.open.time) )
+  ||
   (dayTime.day === openingHours.close.day && openingHours.open.day !== openingHours.close.day &&
-  toMinuteHours(dayTime.time) < toMinuteHours(openingHours.close.time) ) ||
-  
+  toMinuteHours(dayTime.time) < toMinuteHours(openingHours.close.time) )
+  ||
   (
     dayNumber(dayTime.day) > dayNumber(openingHours.open.day) &&
     dayNumber(dayTime.day) < dayNumber(openingHours.close.day)

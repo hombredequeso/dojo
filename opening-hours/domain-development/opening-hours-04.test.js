@@ -42,9 +42,9 @@ const dayNumber = (day) => orderedDaysOfWeek.findIndex(d => d === day);
 // there are 6 possible situations to cover:
 //
 // open and close on same day
-
-// open and close on consecutive days, and dayTime is on the opening day.
-// open and close on consecutive days, and dayTime is on the closing day.
+// open then close on a subsequent day, and dayTime is on the opening day.
+// open then close on a subsequent day, and dayTime is on the closing day.
+// AND
 // dayTime is on neither open or close day, but in between them.
 // AND
 // day is after open day, and open/close days cross over end-of-week-boundary
@@ -53,24 +53,24 @@ const dayNumber = (day) => orderedDaysOfWeek.findIndex(d => d === day);
 const isOpenOn = (openingHours, dayTime) => 
   (dayTime.day === openingHours.open.day && dayTime.day === openingHours.close.day &&
   toMinuteHours(dayTime.time) >= toMinuteHours(openingHours.open.time) &&
-  toMinuteHours(dayTime.time) < toMinuteHours(openingHours.close.time) ) ||
-
+  toMinuteHours(dayTime.time) < toMinuteHours(openingHours.close.time) ) 
+  ||
   (dayTime.day === openingHours.open.day && openingHours.open.day !== openingHours.close.day &&
-  toMinuteHours(dayTime.time) >= toMinuteHours(openingHours.open.time) ) ||
-
+  toMinuteHours(dayTime.time) >= toMinuteHours(openingHours.open.time) )
+  ||
   (dayTime.day === openingHours.close.day && openingHours.open.day !== openingHours.close.day &&
-  toMinuteHours(dayTime.time) < toMinuteHours(openingHours.close.time) ) ||
-  
+  toMinuteHours(dayTime.time) < toMinuteHours(openingHours.close.time) )
+  ||
   (
     dayNumber(dayTime.day) > dayNumber(openingHours.open.day) &&
     dayNumber(dayTime.day) < dayNumber(openingHours.close.day)
-  ) ||
-
+  ) 
+  ||
   (
     dayNumber(dayTime.day) > dayNumber(openingHours.open.day) &&
     dayNumber(openingHours.open.day) > dayNumber(openingHours.close.day)
-  ) ||
-  
+  ) 
+  ||
   (
     dayNumber(dayTime.day) < dayNumber(openingHours.close.day) &&
     dayNumber(openingHours.open.day) > dayNumber(openingHours.close.day)

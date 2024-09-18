@@ -46,13 +46,32 @@ const toMinuteHours = (hourMinuteStr) => {
 }
 
 const toWeeklyMinutes = (dayTime) =>
-(orderedDaysOfWeek.findIndex(d => d == dayTime.day) * 7*24*60)
+(orderedDaysOfWeek.findIndex(d => d == dayTime.day) * 24*60)
 + toMinuteHours(dayTime.time);
 
 
-const isBetween = (modulo)=>(a,b) => (x) => 
-  (a<=b)? (x < b && x >= a): 
-    (x >= a || x < b)
+describe('toWeeklyMinutes', () => {
+  test.each([
+    [{ day: 'Sunday',  time: '00:00'}, 0],
+    [{ day: 'Monday',  time: '00:00'}, 24*60],
+    [{ day: 'Saturday',  time: '00:00'}, 24*60*6],
+    [{ day: 'Saturday',  time: '23:59'}, minutesInWeek-1],
+
+  ])('%#. toWeeklyMinutes %p = %p', (testTime, expectedResult) => {
+    expect(toWeeklyMinutes(testTime)).toEqual(expectedResult);
+  })
+})
+
+
+// isBetween: equal to or greater than a AND less than b
+const isBetween = (modulo)=>(a,b) => (x) => {
+  const am = a % modulo;
+  const bm = b % modulo;
+  const xm = x % modulo;
+
+  return (am<=bm)? (xm < bm && xm >= am): 
+    (xm >= am || xm < bm);
+};
 
 
 const isOpenOn = (openingHours, dayTime) => {
